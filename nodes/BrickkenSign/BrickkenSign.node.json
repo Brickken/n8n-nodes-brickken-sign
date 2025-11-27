@@ -1,0 +1,17 @@
+{
+  "name": "n8n-nodes-brickken.brickkenSign",
+  "codex": {
+    "categories": ["Blockchain", "Utility"],
+    "subcategories": {
+      "Blockchain": ["Signing"],
+      "Utility": ["Helpers"]
+    },
+    "resources": {
+      "primaryDocumentation": [
+        {
+          "url": "https://docs.brickken.com"
+        }
+      ]
+    }
+  }
+}

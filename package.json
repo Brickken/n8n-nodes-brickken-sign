@@ -1,0 +1,61 @@
+{
+  "name": "n8n-nodes-brickken-sign",
+  "version": "1.0.0",
+  "description": "n8n community node for signing blockchain transactions locally",
+  "license": "MIT",
+  "homepage": "https://docs.brickken.com",
+  "keywords": [
+    "n8n-community-node-package",
+    "brickken",
+    "signing",
+    "blockchain",
+    "ethereum",
+    "ethers"
+  ],
+  "author": {
+    "name": "Brickken",
+    "email": "support@brickken.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brickken/n8n-nodes-brickken-sign.git"
+  },
+  "scripts": {
+    "build": "n8n-node build",
+    "build:watch": "tsc --watch",
+    "dev": "n8n-node dev",
+    "lint": "n8n-node lint",
+    "lint:fix": "n8n-node lint --fix",
+    "release": "n8n-node release",
+    "prepublishOnly": "n8n-node prerelease"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "strict": true,
+    "credentials": [
+      "dist/credentials/BrickkenSign.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/BrickkenSign/BrickkenSign.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@n8n/node-cli": "*",
+    "change-case": "4.1.2",
+    "eslint": "9.32.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.0.0"
+  },
+  "overrides": {
+    "change-case": "4.1.2"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  },
+  "dependencies": {
+    "ethers": "^6.11.0"
+  }
+}
