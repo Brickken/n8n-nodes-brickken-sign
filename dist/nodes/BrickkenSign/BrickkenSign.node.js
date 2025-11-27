@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BrickkenSign = void 0;
-const ethers_1 = require("ethers");
+const n8n_workflow_1 = require("n8n-workflow");
 class BrickkenSign {
     constructor() {
         this.description = {
             displayName: 'Brickken Sign',
             name: 'brickkenSign',
-            icon: { light: 'file:brickkenSign.svg', dark: 'file:brickkenSign.svg' },
+            icon: 'file:brickkenSign.svg',
             group: ['transform'],
             version: 1,
             subtitle: 'Sign blockchain transactions locally',
@@ -17,9 +17,10 @@ class BrickkenSign {
             },
             inputs: ['main'],
             outputs: ['main'],
+            usableAsTool: true,
             credentials: [
                 {
-                    name: 'brickkenSign',
+                    name: 'brickkenSignApi',
                     required: true,
                 },
             ],
@@ -40,12 +41,12 @@ class BrickkenSign {
         const returnData = [];
         for (let i = 0; i < items.length; i++) {
             try {
-                const credentials = await this.getCredentials('brickkenSign');
+                const credentials = await this.getCredentials('brickkenSignApi');
                 const privateKey = credentials.privateKey;
                 const transactionJson = this.getNodeParameter('transactionJson', i);
                 // Validate private key format
                 if (!privateKey.match(/^(0x)?[0-9a-fA-F]{64}$/)) {
-                    throw new Error('Invalid private key format. Expected 64 hex characters with optional 0x prefix');
+                    throw new n8n_workflow_1.ApplicationError('Invalid private key format. Expected 64 hex characters with optional 0x prefix');
                 }
                 // Parse transaction JSON
                 let transactionRequest;
@@ -54,25 +55,25 @@ class BrickkenSign {
                         ? JSON.parse(transactionJson)
                         : transactionJson;
                 }
-                catch (error) {
-                    throw new Error('Invalid JSON in transaction field');
+                catch {
+                    throw new n8n_workflow_1.ApplicationError('Invalid JSON in transaction field');
                 }
                 // Validate required transaction fields
                 if (!transactionRequest.to) {
-                    throw new Error('Transaction "to" address is required');
+                    throw new n8n_workflow_1.ApplicationError('Transaction "to" address is required');
                 }
                 if (transactionRequest.chainId === undefined) {
-                    throw new Error('Transaction "chainId" is required');
+                    throw new n8n_workflow_1.ApplicationError('Transaction "chainId" is required');
                 }
-                // Create wallet from private key
-                const wallet = new ethers_1.ethers.Wallet(privateKey);
+                // Create wallet from private key - ethers is available from bundle
+                const wallet = new ethers.Wallet(privateKey);
                 // Sign the transaction
                 const signedTransaction = await wallet.signTransaction(transactionRequest);
                 returnData.push({
                     json: {
                         signedTransaction,
                         signerAddress: wallet.address,
-                        transactionHash: ethers_1.ethers.keccak256(signedTransaction),
+                        transactionHash: ethers.keccak256(signedTransaction),
                     },
                     pairedItem: { item: i },
                 });

@@ -21,8 +21,9 @@
     "url": "https://github.com/brickken/n8n-nodes-brickken-sign.git"
   },
   "scripts": {
-    "build": "n8n-node build",
+    "build": "n8n-node build && npm run bundle",
     "build:watch": "tsc --watch",
+    "bundle": "node bundle.js",
     "dev": "n8n-node dev",
     "lint": "n8n-node lint",
     "lint:fix": "n8n-node lint --fix",
@@ -30,21 +31,23 @@
     "prepublishOnly": "n8n-node prerelease"
   },
   "files": [
-    "dist"
+    "dist",
+    "bundled"
   ],
   "n8n": {
     "n8nNodesApiVersion": 1,
-    "strict": true,
+    "strict": false,
     "credentials": [
-      "dist/credentials/BrickkenSign.credentials.js"
+      "dist/credentials/BrickkenSignApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/BrickkenSign/BrickkenSign.node.js"
+      "bundled/BrickkenSign.node.js"
     ]
   },
   "devDependencies": {
     "@n8n/node-cli": "*",
     "change-case": "4.1.2",
+    "esbuild": "^0.27.0",
     "eslint": "9.32.0",
     "prettier": "^3.0.0",
     "typescript": "^5.0.0"
