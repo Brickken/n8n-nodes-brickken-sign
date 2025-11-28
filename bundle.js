@@ -1,5 +1,6 @@
 const esbuild = require('esbuild');
 const path = require('path');
+const fs = require('fs');
 
 async function bundle() {
     try {
@@ -15,6 +16,16 @@ async function bundle() {
             minify: false,
             sourcemap: false,
         });
+
+        // Copy the SVG icon to bundled folder
+        const svgSource = path.join(__dirname, 'nodes/BrickkenSign/brickkenSign.svg');
+        const svgDest = path.join(__dirname, 'bundled/brickkenSign.svg');
+        if (fs.existsSync(svgSource)) {
+            fs.copyFileSync(svgSource, svgDest);
+            console.log('✓ SVG icon copied to bundled folder');
+        } else {
+            console.warn('⚠ SVG icon not found at:', svgSource);
+        }
 
         console.log('✓ Bundle created successfully');
     } catch (error) {

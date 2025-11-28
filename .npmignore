@@ -6,6 +6,8 @@
 tsconfig.json
 .prettierrc.js
 .eslintrc.js
+eslint.config.mjs
+bundle.js
 
 # Development
 node_modules/
@@ -14,8 +16,11 @@ node_modules/
 
 # Documentation
 README_TEMPLATE.md
+CHANGELOG.md
 
 # Tests
 test/
 *.test.ts
 *.spec.ts
+test-docker-setup/
+*.tgz
