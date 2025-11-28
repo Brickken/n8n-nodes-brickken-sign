@@ -62,14 +62,14 @@ Signs a transaction object using the provided private key.
 
 This node is typically used after an HTTP Request node that fetches transaction data from an API (like the Brickken API).
 
-1. **HTTP Request**: Fetch transaction data (e.g., from `GET /transaction/unsigned`).
+1. **HTTP Request**: Create unsigned transaction (e.g., from `POST /prepare-transaction`).
 2. **Brickken Sign**: Connect the HTTP Request output to this node.
    - Map the **Transaction JSON** field to the output of the previous node (e.g., `{{ $json }}`).
-3. **HTTP Request**: Send the signed transaction to a blockchain provider or API (e.g., `POST /transaction/broadcast`).
+3. **HTTP Request**: Send the signed transaction to a blockchain provider or API (e.g., `POST /send-transaction`).
 
 **Example Workflow:**
 ```
-[Trigger] -> [HTTP Get Unsigned Tx] -> [Brickken Sign] -> [HTTP Broadcast Tx]
+[Trigger] -> [HTTP Prepare Tx] -> [Brickken Sign] -> [HTTP Send Tx]
 ```
 
 ## Documentation
