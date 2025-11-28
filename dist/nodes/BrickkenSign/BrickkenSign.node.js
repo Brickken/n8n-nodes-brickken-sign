@@ -20,7 +20,7 @@ class BrickkenSign {
             usableAsTool: true,
             credentials: [
                 {
-                    name: 'brickkenSignApi',
+                    name: 'brickkenSign',
                     required: true,
                 },
             ],
@@ -41,7 +41,7 @@ class BrickkenSign {
         const returnData = [];
         for (let i = 0; i < items.length; i++) {
             try {
-                const credentials = await this.getCredentials('brickkenSignApi');
+                const credentials = await this.getCredentials('brickkenSign');
                 const privateKey = credentials.privateKey;
                 const transactionJson = this.getNodeParameter('transactionJson', i);
                 // Validate private key format

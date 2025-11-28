@@ -6,8 +6,6 @@ import type {
 } from 'n8n-workflow';
 import { ApplicationError } from 'n8n-workflow';
 
-// Declare ethers as global - it will be bundled by esbuild
-// This avoids the import statement that n8n Cloud linter rejects
 declare const ethers: typeof import('ethers');
 
 export class BrickkenSign implements INodeType {
@@ -27,7 +25,7 @@ export class BrickkenSign implements INodeType {
     usableAsTool: true,
     credentials: [
       {
-        name: 'brickkenSignApi',
+        name: 'brickkenSign',
         required: true,
       },
     ],
@@ -49,7 +47,7 @@ export class BrickkenSign implements INodeType {
 
     for (let i = 0; i < items.length; i++) {
       try {
-        const credentials = await this.getCredentials('brickkenSignApi');
+        const credentials = await this.getCredentials('brickkenSign');
         const privateKey = credentials.privateKey as string;
         const transactionJson = this.getNodeParameter('transactionJson', i) as string;
 
