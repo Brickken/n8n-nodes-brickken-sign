@@ -5,7 +5,7 @@ import type {
   INodeTypeDescription,
 } from 'n8n-workflow';
 import { ApplicationError } from 'n8n-workflow';
-import { ethers } from './ethers-proxy';
+import { signTransaction, privateKeyToAddress, keccak256, hexToBytes, bytesToHex } from './crypto-utils';
 
 export class BrickkenSign implements INodeType {
   description: INodeTypeDescription = {
@@ -47,12 +47,17 @@ export class BrickkenSign implements INodeType {
     for (let i = 0; i < items.length; i++) {
       try {
         const credentials = await this.getCredentials('brickkenSign');
-        const privateKey = credentials.privateKey as string;
+        let privateKey = credentials.privateKey as string;
         const transactionJson = this.getNodeParameter('transactionJson', i) as string;
 
         // Validate private key format
         if (!privateKey.match(/^(0x)?[0-9a-fA-F]{64}$/)) {
           throw new ApplicationError('Invalid private key format. Expected 64 hex characters with optional 0x prefix');
+        }
+
+        // Ensure private key has 0x prefix
+        if (!privateKey.startsWith('0x')) {
+          privateKey = '0x' + privateKey;
         }
 
         // Parse transaction JSON
@@ -74,17 +79,20 @@ export class BrickkenSign implements INodeType {
           throw new ApplicationError('Transaction "chainId" is required');
         }
 
-        // Create wallet from private key - ethers is available from bundle
-        const wallet = new ethers.Wallet(privateKey);
+        // Get signer address from private key
+        const signerAddress = privateKeyToAddress(privateKey);
 
-        // Sign the transaction
-        const signedTransaction = await wallet.signTransaction(transactionRequest);
+        // Sign the transaction using pure JS implementation
+        const signedTransaction = signTransaction(transactionRequest, privateKey);
+
+        // Calculate transaction hash
+        const txHash = bytesToHex(keccak256(hexToBytes(signedTransaction)));
 
         returnData.push({
           json: {
             signedTransaction,
-            signerAddress: wallet.address,
-            transactionHash: ethers.keccak256(signedTransaction),
+            signerAddress,
+            transactionHash: txHash,
           },
           pairedItem: { item: i },
         });

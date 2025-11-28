@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-brickken-sign",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "description": "n8n community node for signing blockchain transactions locally",
   "license": "MIT",
   "homepage": "https://docs.brickken.com",
@@ -45,6 +45,7 @@
     ]
   },
   "devDependencies": {
+    "@n8n/eslint-plugin-community-nodes": "^0.7.0",
     "@n8n/node-cli": "*",
     "change-case": "4.1.2",
     "esbuild": "^0.27.0",
@@ -57,9 +58,5 @@
   },
   "peerDependencies": {
     "n8n-workflow": "*"
-  },
-  "dependencies": {
-    "ethers": "^6.11.0",
-    "sqlite3": "^5.1.7"
   }
 }

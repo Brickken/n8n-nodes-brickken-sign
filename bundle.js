@@ -4,15 +4,15 @@ const fs = require('fs');
 
 async function bundle() {
     try {
-        // Bundle the node file with ethers included
+        // Bundle the node file - everything is self-contained, no external deps
         await esbuild.build({
             entryPoints: ['nodes/BrickkenSign/BrickkenSign.node.ts'],
             bundle: true,
             platform: 'node',
-            target: 'node18',
+            target: 'es2020',
             format: 'cjs',
             outfile: 'bundled/BrickkenSign.node.js',
-            external: ['n8n-workflow'], // Don't bundle n8n-workflow
+            external: ['n8n-workflow'], // Only exclude n8n-workflow (peer dependency)
             minify: false,
             sourcemap: false,
         });
