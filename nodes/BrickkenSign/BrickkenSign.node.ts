@@ -5,8 +5,7 @@ import type {
   INodeTypeDescription,
 } from 'n8n-workflow';
 import { ApplicationError } from 'n8n-workflow';
-
-declare const ethers: typeof import('ethers');
+import { ethers } from './ethers-proxy';
 
 export class BrickkenSign implements INodeType {
   description: INodeTypeDescription = {

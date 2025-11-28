@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BrickkenSign = void 0;
 const n8n_workflow_1 = require("n8n-workflow");
+const ethers_proxy_1 = require("./ethers-proxy");
 class BrickkenSign {
     constructor() {
         this.description = {
@@ -66,14 +67,14 @@ class BrickkenSign {
                     throw new n8n_workflow_1.ApplicationError('Transaction "chainId" is required');
                 }
                 // Create wallet from private key - ethers is available from bundle
-                const wallet = new ethers.Wallet(privateKey);
+                const wallet = new ethers_proxy_1.ethers.Wallet(privateKey);
                 // Sign the transaction
                 const signedTransaction = await wallet.signTransaction(transactionRequest);
                 returnData.push({
                     json: {
                         signedTransaction,
                         signerAddress: wallet.address,
-                        transactionHash: ethers.keccak256(signedTransaction),
+                        transactionHash: ethers_proxy_1.ethers.keccak256(signedTransaction),
                     },
                     pairedItem: { item: i },
                 });

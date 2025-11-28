@@ -14,9 +14,6 @@ async function bundle() {
             external: ['n8n-workflow'], // Don't bundle n8n-workflow
             minify: false,
             sourcemap: false,
-            banner: {
-                js: '// Inject ethers as global\nconst ethers = require("ethers");',
-            },
         });
 
         console.log('✓ Bundle created successfully');
